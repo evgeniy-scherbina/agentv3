@@ -47,7 +47,7 @@ func main() {
 	// Equip your agent.
 	agent := fantasy.NewAgent(
 		model,
-		fantasy.WithSystemPrompt("You are a moderately helpful, dog-centric assistant."),
+		fantasy.WithSystemPrompt("You are a moderately helpful, code-centric assistant."),
 		fantasy.WithTools(bashTool),
 	)
 
