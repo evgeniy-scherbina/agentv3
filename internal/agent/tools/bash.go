@@ -14,8 +14,6 @@ import (
 	"time"
 
 	"charm.land/fantasy"
-	"github.com/charmbracelet/crush/internal/config"
-	"github.com/charmbracelet/crush/internal/permission"
 	"github.com/evgeniy-scherbina/agentv3/internal/shell"
 )
 
