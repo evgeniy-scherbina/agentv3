@@ -187,17 +187,17 @@ func NewBashTool(workingDir string, modelName string) fantasy.AgentTool {
 			// Determine working directory
 			execWorkingDir := cmp.Or(params.WorkingDir, workingDir)
 
-			isSafeReadOnly := false
-			cmdLower := strings.ToLower(params.Command)
+			//isSafeReadOnly := false
+			//cmdLower := strings.ToLower(params.Command)
 
-			for _, safe := range safeCommands {
-				if strings.HasPrefix(cmdLower, safe) {
-					if len(cmdLower) == len(safe) || cmdLower[len(safe)] == ' ' || cmdLower[len(safe)] == '-' {
-						isSafeReadOnly = true
-						break
-					}
-				}
-			}
+			//for _, safe := range safeCommands {
+			//	if strings.HasPrefix(cmdLower, safe) {
+			//		if len(cmdLower) == len(safe) || cmdLower[len(safe)] == ' ' || cmdLower[len(safe)] == '-' {
+			//			isSafeReadOnly = true
+			//			break
+			//		}
+			//	}
+			//}
 
 			// If explicitly requested as background, start immediately with detached context
 			if params.RunInBackground {

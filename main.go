@@ -7,10 +7,12 @@ import (
 
 	"charm.land/fantasy"
 	"charm.land/fantasy/providers/anthropic"
+	"github.com/evgeniy-scherbina/agentv3/internal/agent/tools"
 )
 
 func main() {
 	apiKey := os.Getenv("API_KEY")
+	modelName := "claude-sonnet-4-5"
 
 	// Choose your fave provider.
 	//provider, err := openrouter.New(openrouter.WithAPIKey(apiKey))
@@ -23,7 +25,7 @@ func main() {
 	ctx := context.Background()
 
 	// Pick your fave model.
-	model, err := provider.LanguageModel(ctx, "claude-sonnet-4-5")
+	model, err := provider.LanguageModel(ctx, modelName)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Dang:", err)
 		os.Exit(1)
@@ -36,15 +38,21 @@ func main() {
 	//	fetchCuteDogInfoFunc,
 	//)
 
+	wd, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+	bashTool := tools.NewBashTool(wd, modelName)
+
 	// Equip your agent.
 	agent := fantasy.NewAgent(
 		model,
 		fantasy.WithSystemPrompt("You are a moderately helpful, dog-centric assistant."),
-		//fantasy.WithTools(cuteDogTool),
+		fantasy.WithTools(bashTool),
 	)
 
 	// Put that agent to work!
-	const prompt = "Find all the cute dogs in Silver Lake, Los Angeles."
+	const prompt = "could you develop coder website for me"
 	result, err := agent.Generate(ctx, fantasy.AgentCall{Prompt: prompt})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Oof:", err)
