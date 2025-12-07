@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 
 	"charm.land/fantasy"
@@ -11,7 +13,7 @@ import (
 )
 
 func main() {
-	apiKey := os.Getenv("API_KEY")
+	apiKey := os.Getenv("ANTHROPIC_API_KEY")
 	modelName := "claude-sonnet-4-5"
 
 	// Choose your fave provider.
@@ -53,10 +55,20 @@ func main() {
 
 	// Put that agent to work!
 	const prompt = "could you develop coder website for me"
-	result, err := agent.Generate(ctx, fantasy.AgentCall{Prompt: prompt})
+	maxOutputTokens := int64(10_000)
+	result, err := agent.Generate(ctx, fantasy.AgentCall{
+		Prompt:          prompt,
+		MaxOutputTokens: &maxOutputTokens,
+	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Oof:", err)
 		os.Exit(1)
 	}
-	fmt.Println(result.Response.Content.Text())
+	fmt.Println("text", result.Response.Content.Text())
+
+	resultInJSON, err := json.Marshal(result)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("resultInJSON: %s\n", resultInJSON)
 }
