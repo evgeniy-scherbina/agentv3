@@ -53,7 +53,8 @@ func main() {
 	)
 
 	// Put that agent to work!
-	const prompt = "could you develop coder website for me"
+	//const prompt = "could you develop coder website for me"
+	const prompt = "could you develop a simple golang reverse function and put it in x.go"
 	maxOutputTokens := int64(10_000)
 	result, err := agent.Stream(ctx, fantasy.AgentStreamCall{
 		Prompt: prompt,
