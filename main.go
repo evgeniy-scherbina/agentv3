@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -60,48 +61,85 @@ func main() {
 		MaxOutputTokens: &maxOutputTokens,
 		PrepareStep: func(callContext context.Context, options fantasy.PrepareStepFunctionOptions) (_ context.Context, prepared fantasy.PrepareStepResult, err error) {
 			fmt.Printf("PrepareStep BEGIN\n")
-
-			fmt.Printf("PrepareStep END\n")
+			optionsInJSON, err := json.Marshal(options)
+			if err != nil {
+				return callContext, prepared, err
+			}
+			fmt.Printf("optionsInJSON: %s\n", optionsInJSON)
+			fmt.Printf("PrepareStep END\n\n\n")
 			return callContext, prepared, nil
 		},
 		OnReasoningStart: func(id string, reasoning fantasy.ReasoningContent) error {
 			fmt.Printf("OnReasoningStart BEGIN\n")
-			fmt.Printf("OnReasoningStart END\n")
+			reasoningInJSON, err := json.Marshal(reasoning)
+			if err != nil {
+				return err
+			}
+			fmt.Printf("id: %s\n", id)
+			fmt.Printf("reasoningInJSON: %s\n", reasoningInJSON)
+			fmt.Printf("OnReasoningStart END\n\n\n")
 			return nil
 		},
 		OnReasoningDelta: func(id string, text string) error {
 			fmt.Printf("OnReasoningDelta BEGIN\n")
-			fmt.Printf("OnReasoningDelta END\n")
+			fmt.Printf("id: %s\n", id)
+			fmt.Printf("text: %s\n", text)
+			fmt.Printf("OnReasoningDelta END\n\n\n")
 			return nil
 		},
 		OnReasoningEnd: func(id string, reasoning fantasy.ReasoningContent) error {
 			fmt.Printf("OnReasoningEnd BEGIN\n")
-			fmt.Printf("OnReasoningEnd END\n")
+			reasoningInJSON, err := json.Marshal(reasoning)
+			if err != nil {
+				return err
+			}
+			fmt.Printf("id: %s\n", id)
+			fmt.Printf("reasoningInJSON: %s\n", reasoningInJSON)
+			fmt.Printf("OnReasoningEnd END\n\n\n")
 			return nil
 		},
 		OnTextDelta: func(id string, text string) error {
 			fmt.Printf("OnTextDelta BEGIN\n")
-			fmt.Printf("OnTextDelta END\n")
+			fmt.Printf("id: %s\n", id)
+			fmt.Printf("text: %s\n", text)
+			fmt.Printf("OnTextDelta END\n\n\n")
 			return nil
 		},
 		OnToolInputStart: func(id string, toolName string) error {
 			fmt.Printf("OnToolInputStart BEGIN\n")
-			fmt.Printf("OnToolInputStart END\n")
+			fmt.Printf("id: %s\n", id)
+			fmt.Printf("toolName: %s\n", toolName)
+			fmt.Printf("OnToolInputStart END\n\n\n")
 			return nil
 		},
 		OnToolCall: func(tc fantasy.ToolCallContent) error {
 			fmt.Printf("OnToolCall BEGIN\n")
-			fmt.Printf("OnToolCall END\n")
+			toolCallContentInJSON, err := json.Marshal(tc)
+			if err != nil {
+				return err
+			}
+			fmt.Printf("toolCallContentInJSON: %s\n", toolCallContentInJSON)
+			fmt.Printf("OnToolCall END\n\n\n")
 			return nil
 		},
 		OnToolResult: func(result fantasy.ToolResultContent) error {
 			fmt.Printf("OnToolResult BEGIN\n")
-			fmt.Printf("OnToolResult END\n")
+			resultInJSON, err := json.Marshal(result)
+			if err != nil {
+				return err
+			}
+			fmt.Printf("resultInJSON: %s\n", resultInJSON)
+			fmt.Printf("OnToolResult END\n\n\n")
 			return nil
 		},
 		OnStepFinish: func(stepResult fantasy.StepResult) error {
 			fmt.Printf("OnStepFinish BEGIN\n")
-			fmt.Printf("OnStepFinish END\n")
+			stepResultInJSON, err := json.Marshal(stepResult)
+			if err != nil {
+				return err
+			}
+			fmt.Printf("stepResultInJSON: %s\n", stepResultInJSON)
+			fmt.Printf("OnStepFinish END\n\n\n")
 			return nil
 		},
 		StopWhen: []fantasy.StopCondition{},
