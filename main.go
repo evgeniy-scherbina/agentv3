@@ -2,9 +2,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 
 	"charm.land/fantasy"
@@ -56,9 +54,57 @@ func main() {
 	// Put that agent to work!
 	const prompt = "could you develop coder website for me"
 	maxOutputTokens := int64(10_000)
-	result, err := agent.Generate(ctx, fantasy.AgentCall{
-		Prompt:          prompt,
+	result, err := agent.Stream(ctx, fantasy.AgentStreamCall{
+		Prompt: prompt,
+		//Messages
 		MaxOutputTokens: &maxOutputTokens,
+		PrepareStep: func(callContext context.Context, options fantasy.PrepareStepFunctionOptions) (_ context.Context, prepared fantasy.PrepareStepResult, err error) {
+			fmt.Printf("PrepareStep BEGIN\n")
+
+			fmt.Printf("PrepareStep END\n")
+			return callContext, prepared, nil
+		},
+		OnReasoningStart: func(id string, reasoning fantasy.ReasoningContent) error {
+			fmt.Printf("OnReasoningStart BEGIN\n")
+			fmt.Printf("OnReasoningStart END\n")
+			return nil
+		},
+		OnReasoningDelta: func(id string, text string) error {
+			fmt.Printf("OnReasoningDelta BEGIN\n")
+			fmt.Printf("OnReasoningDelta END\n")
+			return nil
+		},
+		OnReasoningEnd: func(id string, reasoning fantasy.ReasoningContent) error {
+			fmt.Printf("OnReasoningEnd BEGIN\n")
+			fmt.Printf("OnReasoningEnd END\n")
+			return nil
+		},
+		OnTextDelta: func(id string, text string) error {
+			fmt.Printf("OnTextDelta BEGIN\n")
+			fmt.Printf("OnTextDelta END\n")
+			return nil
+		},
+		OnToolInputStart: func(id string, toolName string) error {
+			fmt.Printf("OnToolInputStart BEGIN\n")
+			fmt.Printf("OnToolInputStart END\n")
+			return nil
+		},
+		OnToolCall: func(tc fantasy.ToolCallContent) error {
+			fmt.Printf("OnToolCall BEGIN\n")
+			fmt.Printf("OnToolCall END\n")
+			return nil
+		},
+		OnToolResult: func(result fantasy.ToolResultContent) error {
+			fmt.Printf("OnToolResult BEGIN\n")
+			fmt.Printf("OnToolResult END\n")
+			return nil
+		},
+		OnStepFinish: func(stepResult fantasy.StepResult) error {
+			fmt.Printf("OnStepFinish BEGIN\n")
+			fmt.Printf("OnStepFinish END\n")
+			return nil
+		},
+		StopWhen: []fantasy.StopCondition{},
 	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Oof:", err)
@@ -66,9 +112,9 @@ func main() {
 	}
 	fmt.Println("text", result.Response.Content.Text())
 
-	resultInJSON, err := json.Marshal(result)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("resultInJSON: %s\n", resultInJSON)
+	//resultInJSON, err := json.Marshal(result)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//fmt.Printf("resultInJSON: %s\n", resultInJSON)
 }
