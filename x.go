@@ -12,14 +12,9 @@ func Reverse(s string) string {
 }
 
 func main() {
-	testStrings := []string{
-		"hello",
-		"Go",
-		"12345",
-		"Hello, 世界",
-	}
-
-	for _, s := range testStrings {
-		fmt.Printf("Original: %q -> Reversed: %q\n", s, Reverse(s))
-	}
+	// Example usage
+	original := "Hello, World!"
+	reversed := Reverse(original)
+	fmt.Printf("Original: %s\n", original)
+	fmt.Printf("Reversed: %s\n", reversed)
 }
